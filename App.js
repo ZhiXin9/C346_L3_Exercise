@@ -29,9 +29,9 @@ const App = ()=> {
             questionText: "What year was this movie released?",
             options: [
                 { label: 'Select an answer', value: '' },
-                { label: '1997', value: '1997' },
-                { label: '2000', value: '2000' },
-                { label: '2007', value: '2007' },
+                { label: '1998', value: '1998' },
+                { label: '2001', value: '2001' },
+                { label: '2008', value: '2008' },
             ],
         },
         {
@@ -77,7 +77,7 @@ const App = ()=> {
 
             <TouchableOpacity
                 onPress={()=> {
-                    const correctAnswers = ['Shinichi Kudo', '1997', 'Mouri Detective Agency', '4th May', "A character from one of Kudo Yusaku's books"];
+                    const correctAnswers = ['Shinichi Kudo', '1998', 'Mouri Detective Agency', '4th May', "A character from one of Kudo Yusaku's books"];
                     const userAnswers = [answer1, answer2, answer3, answer4, answer5];
                     let correctCount = 0;
 
