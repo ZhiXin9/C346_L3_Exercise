@@ -1,12 +1,8 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ToastAndroid, Image} from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { Alert } from 'react-native';
-import { ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Question from './components/Question';
 
-
-const App = ()=> {
+const App = () => {
     const [answer1, setAnswer1] = useState('');
     const [answer2, setAnswer2] = useState('');
     const [answer3, setAnswer3] = useState('');
@@ -46,7 +42,7 @@ const App = ()=> {
         },
         {
             image: require('./img/Question4Pic.png'),
-            questionText: "When is Shinichi Kudo Birthday?",
+            questionText: "When is Shinichi Kudo's Birthday?",
             options: [
                 { label: 'Select an answer', value: '' },
                 { label: '4th May', value: '4th May' },
@@ -66,34 +62,29 @@ const App = ()=> {
         },
     ];
 
+    const handleSubmit = () => {
+        const correctAnswers = ['Shinichi Kudo', '1998', 'Mouri Detective Agency', '4th May', "A character from one of Kudo Yusaku's books"];
+        const userAnswers = [answer1, answer2, answer3, answer4, answer5];
+        const correctCount = userAnswers.reduce((count, answer, index) => (answer === correctAnswers[index] ? count + 1 : count), 0);
+        const message = `You have ${correctCount} correct answers!`;
+        Alert.alert(message);
+    };
+
     return (
-        <ScrollView style={{ padding: 50 }}>
-            <Text style={{fontSize:35, fontWeight:'bold'}}>Case Closed Quiz!</Text>
-            <Question question={questions[0]} selectedAnswer={answer1} setSelectedAnswer={setAnswer1} />
-            <Question question={questions[1]} selectedAnswer={answer2} setSelectedAnswer={setAnswer2} />
-            <Question question={questions[2]} selectedAnswer={answer3} setSelectedAnswer={setAnswer3} />
-            <Question question={questions[3]} selectedAnswer={answer4} setSelectedAnswer={setAnswer4} />
-            <Question question={questions[4]} selectedAnswer={answer5} setSelectedAnswer={setAnswer5} />
-
-            <TouchableOpacity
-                onPress={()=> {
-                    const correctAnswers = ['Shinichi Kudo', '1998', 'Mouri Detective Agency', '4th May', "A character from one of Kudo Yusaku's books"];
-                    const userAnswers = [answer1, answer2, answer3, answer4, answer5];
-                    let correctCount = 0;
-
-                    userAnswers.forEach((answer,index) => {
-                        if (answer === correctAnswers[index]) {
-                            correctCount++;
-                        }
-                    });
-                    const message = `You have ${correctCount} correct answers!`;
-                    Alert.alert(message);
-                }}
-                style={styles.submitButton}
-            >
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+            <Text style={styles.title}>Case Closed Quiz!</Text>
+            {questions.map((question, index) => (
+                <View key={index} style={styles.questionContainer}>
+                    <Question
+                        question={question}
+                        selectedAnswer={[answer1, answer2, answer3, answer4, answer5][index]}
+                        setSelectedAnswer={[setAnswer1, setAnswer2, setAnswer3, setAnswer4, setAnswer5][index]}
+                    />
+                </View>
+            ))}
+            <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
                 <Text style={styles.submitButtonText}>Submit Answers</Text>
             </TouchableOpacity>
-            <View style={styles.bottomSpace} />
         </ScrollView>
     );
 };
@@ -101,34 +92,53 @@ const App = ()=> {
 export default App;
 
 const styles = StyleSheet.create({
-    container: {
-        paddingVertical: 30,
-        paddingHorizontal: 20,
+    contentContainer: {
+        paddingVertical: 20,
+        paddingHorizontal: 15,
+        alignItems: 'center',
+        backgroundColor: 'skyblue',
+        minHeight: '100%',
+    },
+    title: {
+        fontSize: 34,
+        fontWeight: '900',
+        color: '#4B6587',
+        textAlign: 'center',
+        marginBottom: 40,
+        marginTop: 40,
+        letterSpacing: 1.5,
+        fontFamily: 'Roboto',
+    },
+    questionContainer: {
+        width: '100%',
+        marginBottom: 20,
+        paddingVertical: 15,
+        paddingHorizontal: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        marginBottom: 30,
-        color: '#333333',
-        textAlign: 'center',
-    },
     submitButton: {
-        backgroundColor: '#007BFF',
-        paddingVertical: 12,
-        paddingHorizontal: 25,
+        backgroundColor: 'darkblue',
+        paddingVertical: 15,
+        paddingHorizontal: 30,
         borderRadius: 5,
         alignItems: 'center',
-        marginVertical: 30,
-        width: '100%',
+        width: '90%',
+        marginTop: 30,
+        elevation: 2,
+        justifyContent: 'center',
     },
     submitButtonText: {
         color: '#FFFFFF',
         fontSize: 18,
         fontWeight: '600',
-    },
-    bottomSpace: {
-        height: 50,
+        textAlign: 'center',
     },
 });
